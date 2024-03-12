@@ -7,11 +7,7 @@ import (
 )
 
 func UserRoutes(incomingRoutes *gin.Engine) {
-	userRoutes := incomingRoutes.Group("/users")
-	{
-		userRoutes.GET("/", middleware.TokenAuthMiddleware(), controller.GetUsers())
-		userRoutes.GET("/:id", middleware.TokenAuthMiddleware(), controller.GetUser())
-		userRoutes.PUT("/:id", middleware.TokenAuthMiddleware(), controller.UpdateUser())
-		userRoutes.DELETE("/:id", middleware.TokenAuthMiddleware(), controller.DeleteUser())
-	}
+	incomingRoutes.Use(middleware.Authenticate())
+	incomingRoutes.GET("/users", controller.GetUsers())
+	incomingRoutes.GET("/users/:user_id", controller.GetUser())
 }
